@@ -1,0 +1,3 @@
+[submodule "preparation/sleep-edfx-toolbox"]
+	path = preparation/sleep-edfx-toolbox
+	url = git@github.com:preplic/sleep-edfx-toolbox.git
