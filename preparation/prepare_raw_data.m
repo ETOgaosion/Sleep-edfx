@@ -5,7 +5,7 @@ clc
 addpath('./sleepedfx_scripts/');
 addpath('./edf_reader/');
 
-data_path = './sleepedfx_database/';
+data_path = './sleepedfx_database_test/';
 
 raw_data_path = './raw_data/';
 if(~exist(raw_data_path, 'dir'))
@@ -25,7 +25,7 @@ y_all = cell(Nsub,1); % one-hot encoding
 % list only healthy (SC) subjects
 listing = dir([data_path, 'SC4*']);
 
-for i = 21 : numel(listing)
+for i = 1 : numel(listing)
     disp(listing(i).name)
     target_dir = [data_path, listing(i).name, '/'];
     
@@ -34,7 +34,8 @@ for i = 21 : numel(listing)
     sub_id = sub_id + 1; % index 0 to 1
     
     % load edf data to get Fpz-Cz, and EOGhorizontal channels
-    edf_file = [target_dir, listing(i).name, '-PSG.edf'];
+    edf_file = [target_dir, dir([target_dir, '/*-PSG.edf']).name];
+    disp(edf_file)
     [header, edf] = edfreadUntilDone(edf_file);
     channel_names = header.label;
     
@@ -78,7 +79,7 @@ for i = 21 : numel(listing)
     %chan_data_eog = chan_data_eog - mean(chan_data_eog);
     
     % load hypnogram
-    hyp_file = fullfile([target_dir, 'info/', listing(i).name, '.txt']);
+    hyp_file = fullfile([target_dir, 'info/', dir([target_dir, 'info/', 'SC4*']).name]);
     hypnogram = edfx_load_hypnogram( hyp_file );
     
     % process times to determine the in-bed duration
